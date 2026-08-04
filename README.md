@@ -2,11 +2,12 @@
 
 [releases](https://github.com/TGPSKI/vanity/releases) | [changelog](CHANGELOG.md) | [guide](docs/GUIDE.md) | [pate.sh](https://pate.sh)
 
-**A declarative model library manifest, in one stdlib-only Python package.**
+**Home-grown model library management from a local talent agent.**
 
-vanity maps stable names to `{repo, role, runtime, size_hint, revision}`, groups
-them into sets, pins each to a commit, and fetches them over any of three
-interchangeable backends.
+The models are the talent. vanity keeps the roster: stable names mapped to
+`{repo, role, runtime, size_hint, revision}`, grouped into sets, each pinned to a
+commit, fetched over any of three interchangeable backends. One stdlib-only
+Python package.
 
 No `pip install`. No compiled wheels. No Rust toolchain waiting to ambush you on
 a new interpreter.
@@ -22,7 +23,7 @@ vanity fetch bge-m3
 
 ## The manifest is the product
 
-The byte-moving is the least interesting layer. What you keep is the manifest:
+The byte-moving is the least interesting layer. What you keep is the roster:
 
 ```json
 {

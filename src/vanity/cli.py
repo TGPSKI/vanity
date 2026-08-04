@@ -406,7 +406,7 @@ def cmd_remove(args: argparse.Namespace) -> int:
 def _build_parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(
         prog="vanity",
-        description="vanity -- declarative, zero-dependency model library manifest manager.",
+        description="vanity -- home-grown model library management from a local talent agent.",
     )
     root.add_argument(
         "--registry-dir", type=str, default=None,

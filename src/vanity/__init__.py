@@ -1,4 +1,4 @@
-"""vanity — declarative, zero-dependency model library manifest manager."""
+"""vanity — Home-grown model library management from a local talent agent."""
 
 from .cli import main  # noqa: F401
 from .registry import Model, Registry  # noqa: F401

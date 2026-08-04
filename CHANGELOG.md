@@ -7,6 +7,12 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- **Tagline.** "Home-grown model library management from a local talent agent"
+  is now the hero line across the README, the guide, the package metadata, and
+  `vanity --help`.
+
 ### Fixed
 
 - **Test suite portability on Windows.** Two path assertions compared against
