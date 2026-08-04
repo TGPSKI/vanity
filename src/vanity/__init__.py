@@ -9,4 +9,4 @@ try:  # installed
 
     __version__ = version("vanity")
 except (ImportError, PackageNotFoundError):  # running straight from a clone
-    __version__ = "0.2.0"
+    __version__ = "0.2.1"

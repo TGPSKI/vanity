@@ -7,11 +7,19 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-08-03
+
 ### Changed
 
 - **Tagline.** "Home-grown model library management from a local talent agent"
   is now the hero line across the README, the guide, the package metadata, and
   `vanity --help`.
+- **`main` no longer requires an approving review.** On a solo-maintained repo a
+  1-approval rule means every change needs `gh pr merge --admin`, which trains
+  you to reach for the override reflexively — that erodes the protection more
+  than lowering the count does. Pull requests, status checks, required
+  signatures, and no-force-push all stay; code-owner review stays configured so
+  it takes effect the moment a second maintainer exists.
 
 ### Fixed
 
@@ -176,6 +184,7 @@ Initial working tool, personal use only.
   exponential backoff, progress heartbeats.
 - Makefile interface and `AGENTS.md` with repo-verification and grouping rules.
 
-[Unreleased]: https://github.com/TGPSKI/vanity/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/TGPSKI/vanity/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/TGPSKI/vanity/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/TGPSKI/vanity/releases/tag/v0.2.0
 [0.1.0]: https://github.com/TGPSKI/vanity/releases/tag/v0.1.0
