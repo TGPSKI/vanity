@@ -7,6 +7,15 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Test suite portability on Windows.** Two path assertions compared against
+  POSIX separators, and three cases stub `git` with a `#!/bin/sh` script that
+  Windows cannot execute. The path assertions now render through `Path`; the
+  stub-based cases are skipped there with the reason stated, since the argv
+  construction they cover is platform-independent. Product code was not at
+  fault — this was the Windows CI tier doing its job on its first run.
+
 ## [0.2.0] - 2026-08-03
 
 First public release. v0.1.0 was a working personal tool: one 980-line

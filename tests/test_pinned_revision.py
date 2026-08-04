@@ -35,6 +35,11 @@ class TestIsCommitSha(unittest.TestCase):
                 self.assertFalse(gitfetch.is_commit_sha(name))
 
 
+@unittest.skipIf(
+    os.name == "nt",
+    "stubs git with a #!/bin/sh script, which Windows cannot execute; "
+    "the argv construction under test is platform-independent",
+)
 class TestPinnedCloneCommands(unittest.TestCase):
     """Assert the argv git actually receives for pinned vs unpinned revisions."""
 
