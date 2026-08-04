@@ -1,5 +1,7 @@
 # vanity guide
 
+> Home-grown model library management from a local talent agent.
+
 Everything you do with vanity, in the order you'll do it: set up, declare a
 library, fetch it, keep it honest.
 

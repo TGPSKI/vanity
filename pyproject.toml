@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "vanity"
 version = "0.2.0"
-description = "vanity — declarative, zero-dependency model library manifest manager."
+description = "vanity — Home-grown model library management from a local talent agent."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "GPL-3.0-only"
