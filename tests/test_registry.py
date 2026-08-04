@@ -80,9 +80,11 @@ class TestLoadRegistry(unittest.TestCase):
 
     def test_missing_registry_dir_system_exit(self):
         vanity = load_vanity().registry
+        missing = Path("/nonexistent/path/xyz")
         with self.assertRaises(SystemExit) as ctx:
-            vanity.load_registry(Path("/nonexistent/path/xyz"))
-        self.assertIn("/nonexistent/path/xyz", str(ctx.exception))
+            vanity.load_registry(missing)
+        # str(Path) so the separator matches the platform under test.
+        self.assertIn(str(missing), str(ctx.exception))
 
     def test_zero_json_files_system_exit(self):
         with tempfile.TemporaryDirectory() as tmp:

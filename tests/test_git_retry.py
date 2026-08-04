@@ -18,6 +18,11 @@ transient_error = util.transient_error
 GitFailure = util.GitFailure
 
 
+@unittest.skipIf(
+    os.name == "nt",
+    "stubs git with a #!/bin/sh script, which Windows cannot execute; "
+    "the argv construction under test is platform-independent",
+)
 class TestStderrCapture(unittest.TestCase):
     """Verify that run_git_command captures git stderr into GitFailure."""
 

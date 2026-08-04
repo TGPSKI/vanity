@@ -27,7 +27,7 @@ class TestDisplayPath(unittest.TestCase):
         with mock.patch.object(config, "store_root", return_value=store):
             self.assertEqual(
                 util.display_path(store / "qwq-32b-awq" / "config.json"),
-                "qwq-32b-awq/config.json",
+                str(Path("qwq-32b-awq") / "config.json"),
             )
 
     def test_absolute_when_outside_the_store(self) -> None:
