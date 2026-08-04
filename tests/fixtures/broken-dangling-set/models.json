@@ -1,0 +1,12 @@
+{
+  "models": {
+    "existing-model": {
+      "repo": "test/repo",
+      "runtime": "test",
+      "role": "test model"
+    }
+  },
+  "sets": {
+    "broken-set": ["no-such-model"]
+  }
+}

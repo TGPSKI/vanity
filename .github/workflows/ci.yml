@@ -1,0 +1,149 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref (saves runner minutes on busy PRs).
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────
+  # Fast-feedback gate. Runs on every push and PR.
+  # Both ends of the supported range: the requires-python floor, and the
+  # bleeding-edge interpreter the zero-dependency stance exists to survive.
+  # ─────────────────────────────────────────────────────────────────────────
+  test:
+    name: Test (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.14"]
+
+    steps:
+      - name: Checkout
+        # actions/checkout v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Set up Python
+        # actions/setup-python v7.0.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Show interpreter
+        run: python -VV
+
+      - name: Syntax check
+        run: make compile
+
+      # Runs straight from src/ with no install, which is how the tool is meant
+      # to be usable — if this breaks, the "clone and go" claim is gone.
+      - name: Unit tests
+        run: make test
+
+      - name: Example registry loads and resolves
+        env:
+          VANITY_REGISTRY_DIR: examples/registry
+        run: make list
+
+      - name: Editable install builds and exposes the CLI
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          VANITY_REGISTRY_DIR=examples/registry vanity list
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Lint. Separate job so a style failure doesn't mask a real test failure.
+  # ─────────────────────────────────────────────────────────────────────────
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        # actions/checkout v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Set up Python
+        # actions/setup-python v7.0.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.14"
+
+      - name: Install ruff
+        run: python -m pip install ruff
+
+      - name: Ruff
+        run: ruff check src tests
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Cross-platform, full-scope checks.
+  # Triggers:
+  #   - PR carrying the `full-test` label
+  #   - manual `workflow_dispatch`
+  #   - any push to `main`
+  # ─────────────────────────────────────────────────────────────────────────
+  full-scope:
+    name: Full-scope (${{ matrix.label }})
+    needs: test
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' &&
+        contains(github.event.pull_request.labels.*.name, 'full-test')) ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    timeout-minutes: 20
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: linux/arm64
+            os: ubuntu-24.04-arm
+          - label: macos/arm64
+            os: macos-14
+          - label: windows/amd64
+            os: windows-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        # actions/checkout v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Set up Python
+        # actions/setup-python v7.0.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.14"
+
+      - name: Show toolchain
+        run: python -VV
+
+      # Invoked directly rather than through make: the Makefile assumes POSIX
+      # tooling, and the point of this job is that the package itself is
+      # portable — including the PID-liveness probe, which cannot use the
+      # signal-0 trick on Windows.
+      - name: Unit tests
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -v
+
+      - name: Example registry loads and resolves
+        env:
+          PYTHONPATH: src
+          VANITY_REGISTRY_DIR: examples/registry
+        run: python -m vanity list

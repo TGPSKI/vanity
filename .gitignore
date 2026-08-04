@@ -1,0 +1,11 @@
+.env
+.state/
+library/
+logs/
+__pycache__/
+*.py[cod]
+*.egg-info/
+sessions/
+.ignore
+/registry/
+/hack/

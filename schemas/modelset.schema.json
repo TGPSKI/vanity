@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft/2020-12/schema#",
+  "$id": "modelset.schema",
+  "title": "ModelSet Registry",
+  "description": "Schema for a vanity registry file defining models, sets, and aliases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [ "models" ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "description": {
+      "type": "string"
+    },
+    "models": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9._-]*$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [ "repo", "runtime", "role" ],
+          "properties": {
+            "repo": {
+              "type": "string",
+              "pattern": "^[^/]+/[^/]+$"
+            },
+            "runtime": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "size_hint": {
+              "type": "string"
+            },
+            "revision": {
+              "type": "string",
+              "default": "main"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "sets": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9._-]*$": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "aliases": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9._-]*$"
+      }
+    }
+  }
+}

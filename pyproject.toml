@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vanity"
+version = "0.2.0"
+description = "vanity — declarative, zero-dependency model library manifest manager."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+dependencies = []
+
+[project.scripts]
+vanity = "vanity.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

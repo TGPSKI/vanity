@@ -1,0 +1,21 @@
+# vanity is stdlib-only; ruff is the one dev-time tool, never a runtime import.
+line-length = 100
+target-version = "py310"
+
+[lint]
+select = [
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "I",    # import sorting
+    "UP",   # pyupgrade
+    "B",    # bugbear
+    "SIM",  # simplify
+]
+ignore = [
+    "E501",  # line length is enforced by review, not by a hard error
+]
+
+[lint.per-file-ignores]
+# Tests load the package through a helper before importing it, so imports
+# cannot all sit at the top of the file.
+"tests/*" = ["E402"]
